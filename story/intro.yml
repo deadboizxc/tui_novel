@@ -1,0 +1,271 @@
+init:
+  actions:
+    - animate:
+        type: "glitch"
+        text: "Инициализация разума..."
+        duration: 3
+    - set_var: { sanity: 100, memories: 0, pills_taken: 0, loop_count: 0 }
+    - jump: "prologue.start"
+
+# ==============================
+# ПРОЛОГ: Пробуждение в 03:17
+# ==============================
+start:
+  bg: "room_dark"
+  text: |
+    Ты открываешь глаза. 
+    Комната — как фотография, застывшая во времени. 
+    Часы на стене: **03:17**. 
+    Это уже четвёртый раз за ночь. 
+    Или... за всю жизнь?
+  sfx: "heartbeat_slow"
+  choices:
+    - text: "Проверить телефон"
+      next: "phone_check"
+    - text: "Включить свет"
+      next: "light_on"
+    - text: "Закрыть глаза. Ещё раз."
+      next: "sleep_loop"
+
+phone_check:
+  text: |
+    Экран мигает. Новое сообщение от **"Неизвестный"**:
+    > *"Ты всё ещё думаешь, что это сон? 
+    Посмотри на фото. Это ты. Но ты его не делал."*
+
+    Под текстом — селфи. Ты улыбаешься. 
+    Но **ты не помнишь, когда улыбался**.
+  actions:
+    - add_coin: -8
+    - set_flag: phone_message_seen
+  choices:
+    - text: "Удалить"
+      next: "delete_msg"
+    - text: "Ответить: «Кто ты?»"
+      next: "reply_unknown"
+
+delete_msg:
+  text: |
+    Сообщение удалено. 
+    Но фото остаётся. 
+    Ты увеличиваешь — в отражении в окне за спиной кто-то стоит. 
+    **Ты не один на фото.**
+  choices:
+    - text: "Сфотографировать экран"
+      next: "photo_glitch"
+    - text: "Выключить телефон"
+      next: "light_on"
+
+photo_glitch:
+  animate:
+    type: "static"
+    duration: 2
+  text: |
+    *Клик.* 
+    Камера срабатывает. 
+    На экране — **не телефон**, а **ты**. 
+    Стоишь за спиной. 
+    Глаза — чёрные провалы. 
+    Улыбка — до ушей. 
+    **Ты не двигался.**
+  sfx: "camera_flash_distorted"
+  actions:
+    - add_coin: -15
+    - set_flag: shadow_selfie
+  choices:
+    - text: "[Крикнуть]"
+      next: "scream_intro"
+    - text: "[Замереть]"
+      next: "freeze_intro"
+
+reply_unknown:
+  text: |
+    Ты: *«Кто ты?»*
+
+    Ответ мгновенно:
+    > *"Тот, кем ты станешь, если не примешь таблетки. 
+    Она ждёт. В подвале. Не ходи туда."*
+  actions:
+    - add_coin: -12
+    - set_flag: shadow_reply
+  choices:
+    - text: "Найти таблетки"
+      next: "find_pills"
+    - text: "Выбросить телефон"
+      next: "throw_phone"
+
+throw_phone:
+  sfx: "glass_break"
+  text: |
+    Телефон разбивается о стену. 
+    Но вибрация — в голове. 
+    *Бззз... Бззз...* 
+    Голос шепчет: *"Папа..."*
+  actions:
+    - add_coin: -20
+  choices:
+    - text: "Выйти в коридор"
+      jump: "chapter1.start"
+
+light_on:
+  bg: "room_light"
+  text: |
+    Лампочка мигает. Гаснет. 
+    В зеркале — ты. 
+    Но **он моргает, когда ты не моргаешь**. 
+    Его губы шевелятся:  
+    > *"Ты убил её. Снова."*
+  choices:
+    - text: "Разбить зеркало"
+      next: "break_mirror"
+    - text: "Отвернуться"
+      next: "turn_away"
+    - text: "Подойти ближе"
+      next: "approach_mirror"
+
+break_mirror:
+  sfx: "glass_shatter"
+  text: |
+    Осколки летят. 
+    Из одного — **детская рука**. 
+    Хватает за запястье. 
+    Тянет внутрь. 
+    Ты чувствуешь холод стекла на коже.
+  actions:
+    - add_coin: -25
+    - set_flag: mirror_broken
+  choices:
+    - text: "Вырваться"
+      next: "escape_mirror"
+    - text: "Позволить утянуть"
+      jump: "end.mirror_prison"
+
+escape_mirror:
+  text: |
+    Ты вырываешься. 
+    Рука исчезает. 
+    Но на запястье — следы пальцев. 
+    **Детских.**
+  choices:
+    - text: "Выйти в коридор"
+      jump: "chapter1.start"
+
+turn_away:
+  text: |
+    Ты отворачиваешься. 
+    Шаги. Босые. Мелкие. 
+    За спиной. 
+    **Ты знаешь этот звук.**
+  choices:
+    - text: "Обернуться"
+      next: "look_back"
+    - text: "Бежать"
+      jump: "chapter1.start"
+
+look_back:
+  text: |
+    Пусто. 
+    Но на зеркале — надпись кровью:  
+    > *"Ая ждёт в подвале."*
+  actions:
+    - add_coin: -18
+    - set_flag: aya_name_seen
+  choices:
+    - text: "Выйти"
+      jump: "chapter1.start"
+
+approach_mirror:
+  text: |
+    Ты подходишь. 
+    Отражение — **не ты**. 
+    Оно старше. Глаза красные. 
+    В руках — нож. 
+    Оно шепчет:  
+    > *"Ты забыл её имя. Но я — помню."*
+  choices:
+    - text: "Спросить: «Кто она?»"
+      next: "ask_mirror"
+    - text: "Ударить"
+      jump: "end.mirror_shatter_death"
+
+ask_mirror:
+  text: |
+    > *"Ая. Твоя дочь. Ты убил её. 
+    Таблетки — чтобы забыть. 
+    Но она не уходит."*
+  actions:
+    - add_coin: -30
+    - set_flag: daughter_revealed_early
+  choices:
+    - text: "Выйти из комнаты"
+      jump: "chapter1.start"
+
+sleep_loop:
+  text: |
+    Ты засыпаешь. 
+    Просыпаешься. 
+    **03:17.** 
+    Это уже не сон. 
+    Это — **твоя тюрьма.**
+  actions:
+    - add_coin: -35
+    - increment: loop_count
+  choices:
+    - text: "Попробовать ещё раз"
+      condition: { var: loop_count, lt: 3 }
+      next: "sleep_loop"
+    - text: "Встать. Навсегда."
+      jump: "chapter1.start"
+
+scream_intro:
+  text: |
+    Ты кричишь. 
+    Стены дрожат. 
+    Из вентиляции — детский смех. 
+    > *"Папа, ты дома?"*
+  actions:
+    - add_coin: -20
+  choices:
+    - text: "Замолчать"
+      next: "light_on"
+
+freeze_intro:
+  text: |
+    Ты замираешь. 
+    Тень за спиной — **движется**. 
+    Подходит. 
+    Дышит в затылок. 
+    **Ты не дышишь.**
+  actions:
+    - add_coin: -25
+  choices:
+    - text: "Обернуться"
+      jump: "end.shadow_embrace"
+    - text: "Бежать"
+      jump: "chapter1.start"
+
+find_pills:
+  text: |
+    В ящике — блистер. 
+    Одна голубая капсула. 
+    На обороте — надпись:  
+    > *"Принимай, пока не забудешь её имя."*
+  actions:
+    - increment: pills_taken
+    - add_coin: 15
+  choices:
+    - text: "Проглотить"
+      next: "pill_effect_intro"
+    - text: "Спрятать"
+      jump: "chapter1.start"
+
+pill_effect_intro:
+  text: |
+    Горькая. 
+    Мир — чётче. 
+    Но стены — **дышат**. 
+    Голос в голове:  
+    > *"Ты снова предал её."*
+  choices:
+    - text: "Выйти"
+      jump: "chapter1.start"

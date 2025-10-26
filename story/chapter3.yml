@@ -1,0 +1,99 @@
+start:
+  bg: "basement_stairs"
+  text: |
+    Глава 3: Спуск в бездну
+    Люк в подвал. 
+    Ступени — **скрипят, как кости**. 
+    Внизу — свет телевизора.
+  choices:
+    - text: "Спуститься"
+      next: "basement_tv"
+    - text: "Закрыть люк"
+      jump: "chapter4.start"
+
+basement_tv:
+  animate:
+    type: "static_heavy"
+    duration: 4
+  text: |
+    На экране — **ты**. 
+    Сидишь в этой комнате. 
+    Но старше. 
+    Глаза — пустые. 
+    В руках — **нож**. 
+    На полу — **кровь**.
+  choices:
+    - text: "Выключить"
+      next: "turn_off_tv"
+    - text: "Поговорить"
+      next: "talk_to_self"
+
+talk_to_self:
+  text: |
+    Ты на экране:  
+    > *"Ты всё ещё думаешь, что это сон? 
+    Это — **петля**. 
+    Ты убиваешь её. 
+    Снова. И снова."*
+  choices:
+    - text: "Кого?"
+      next: "ask_who"
+    - text: "Разбить экран"
+      next: "smash_tv"
+
+ask_who:
+  text: |
+    > *"Аю. Твою дочь. 
+    Ты не хотел. 
+    Но сделал. 
+    Таблетки — чтобы забыть. 
+    Но она — **не уходит**."*
+
+    В углу — **кроватка**. 
+    Пустая. 
+    Но простыня — **тёплая**.
+  actions:
+    - add_coin: -40
+    - set_flag: daughter_revealed
+  choices:
+    - text: "Подойти"
+      next: "check_crib"
+    - text: "Бежать"
+      jump: "chapter4.start"
+
+check_crib:
+  text: |
+    В кроватке — **плюшевая собака**. 
+    Глаза — пуговицы. 
+    Одна — **вырвана**. 
+    На шее — бирка: *"Ая"*
+  choices:
+    - text: "Взять"
+      next: "take_toy"
+    - text: "Оставить"
+      jump: "chapter4.start"
+
+take_toy:
+  actions:
+    - add_item: daughter_toy
+  text: |
+    Ты сжимаешь игрушку. 
+    Плачешь. 
+    **Впервые за годы.**
+  choices:
+    - text: "Выйти"
+      jump: "chapter4.start"
+
+smash_tv:
+  sfx: "glass_shatter"
+  text: |
+    Экран взрывается. 
+    Осколки режут руки. 
+    Кровь — **настоящая**. 
+    Голос в голове:  
+    > *"Ты не можешь убить правду."*
+  actions:
+    - add_coin: -35
+  choices:
+    - text: "Уйти"
+      jump: "chapter4.start"

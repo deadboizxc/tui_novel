@@ -1,0 +1,130 @@
+start:
+  bg: "hallway_dim"
+  text: |
+    Глава 1: Шёпот в стенах
+    Коридор — как живая вена. 
+    Пульсирует. 
+    Дышит. 
+    Одна дверь — в ванную.
+  music: "ambient_dread"
+  choices:
+    - text: "Войти в ванную"
+      next: "bathroom_entry"
+    - text: "Идти дальше"
+      next: "hallway_deeper"
+    - text: "Кричать"
+      next: "scream_ch1"
+
+bathroom_entry:
+  bg: "bathroom_bloody"
+  text: |
+    Ванна — полна **красной воды**. 
+    На зеркале — надпись пальцем:  
+    > *"ПРИМИ ТАБЛЕТКИ. ОНА ЖДЁТ."*
+
+    Под краном — **одна капсула**.
+  choices:
+    - text: "Взять таблетку"
+      next: "take_pill_ch1"
+    - text: "Смыть надпись"
+      next: "wash_mirror"
+    - text: "Заглянуть в ванну"
+      next: "check_bathtub"
+
+take_pill_ch1:
+  actions:
+    - increment: pills_taken
+    - add_coin: 25
+    - set_flag: pill_taken_ch1
+  text: |
+    Капсула — как лёд во рту. 
+    Мир — стабилизируется. 
+    Но стены — **шепчут её имя**.
+  choices:
+    - text: "Выйти"
+      jump: "chapter2.start"
+
+wash_mirror:
+  text: |
+    Вода не смывает. 
+    Надпись **становится ярче**. 
+    Кровь течёт по стеклу. 
+    Формирует лицо. 
+    **Её лицо.**
+  actions:
+    - add_coin: -20
+  choices:
+    - text: "Ударить зеркало"
+      jump: "end.mirror_bleed"
+    - text: "Уйти"
+      jump: "chapter2.start"
+
+check_bathtub:
+  text: |
+    В воде — **ты**. 
+    Но ты стоишь снаружи. 
+    Отражение машет. 
+    Поднимается. 
+    **Выходит из ванны.**
+  actions:
+    - add_coin: -30
+  choices:
+    - text: "Бежать"
+      jump: "chapter2.start"
+    - text: "Остаться"
+      jump: "end.doppelganger_rise"
+
+hallway_deeper:
+  text: |
+    Коридор сужается. 
+    На полу — **детские рисунки**:  
+    - Дом.  
+    - Солнце.  
+    - Ты с ножом в груди.  
+    - Подпись: *"Папа обещал"*
+  choices:
+    - text: "Поднять"
+      next: "pick_drawing"
+    - text: "Идти дальше"
+      jump: "chapter2.start"
+
+pick_drawing:
+  text: |
+    Оборот:  
+    > *"Ты сказал, что защитишь меня. 
+    Почему ты пьёшь таблетки?"*
+
+    Рисунок — **твоя рука**.
+  actions:
+    - add_coin: -25
+    - set_flag: drawing_found
+  choices:
+    - text: "Сохранить"
+      next: "hallway_deeper"
+    - text: "Сжечь"
+      next: "burn_drawing"
+
+burn_drawing:
+  sfx: "fire_crackle"
+  text: |
+    Рисунок горит. 
+    Пламя — **синие глаза**. 
+    Голос:  
+    > *"Ты снова это сделал."*
+  actions:
+    - add_coin: -40
+  choices:
+    - text: "Бежать"
+      jump: "chapter2.start"
+
+scream_ch1:
+  text: |
+    Ты кричишь. 
+    Стены — **отвечают**. 
+    Детский хор:  
+    > *"Папа... папа... папа..."*
+  actions:
+    - add_coin: -15
+  choices:
+    - text: "Замолчать"
+      next: "start"
