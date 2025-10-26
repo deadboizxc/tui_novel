@@ -1,0 +1,71 @@
+start:
+  bg: "room_final"
+  text: |
+    Глава 4: Последний выбор
+    Ты — в своей комнате. 
+    На столе:  
+    - **Нож**  
+    - **Таблетки**  
+    - **Кассета**  
+    - **Игрушка Аи**
+  choices:
+    - text: "Взять нож"
+      next: "take_knife"
+    - text: "Все таблетки"
+      jump: "end.overdose"
+    - text: "Кассета"
+      condition: { item: cassette_tape }
+      next: "play_tape_final"
+    - text: "Игрушка"
+      condition: { item: daughter_toy }
+      next: "hold_toy"
+    - text: "Ждать утра"
+      jump: "end.eternal_wait"
+
+take_knife:
+  text: |
+    Нож — холодный. 
+    Лезвие помнит. 
+    **Ты помнишь.**
+  choices:
+    - text: "В себя"
+      jump: "end.knife_madness"
+    - text: "В стену"
+      next: "stab_wall"
+
+stab_wall:
+  text: |
+    Кровь на обоях:  
+    > **"АЯ"**
+
+    Ты падаешь. 
+    Умираешь с её именем. 
+    **Но она — свободна.**
+  jump: "end.sacrifice"
+
+play_tape_final:
+  sfx: "child_laugh"
+  text: |
+    Голос Аи:  
+    > *"Папа, я на площадке. 
+    Не пей таблетки. 
+    Приди ко мне. 
+    Я жду."*
+  choices:
+    - text: "Уничтожить таблетки"
+      condition: { var: pills_taken, lte: 1 }
+      jump: "end.break_cycle"
+    - text: "Принять ещё"
+      jump: "end.overdose"
+
+hold_toy:
+  text: |
+    Ты сжимаешь собаку. 
+    Плачешь. 
+    **Ты помнишь.**
+  choices:
+    - text: "Выйти на улицу"
+      condition: { var: sanity, gte: 50 }
+      jump: "end.accept_truth"
+    - text: "Остаться"
+      jump: "end.forgotten_loop"

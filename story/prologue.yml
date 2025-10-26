@@ -1,0 +1,47 @@
+start:
+  bg: "hallway_first"
+  text: |
+    Ты в коридоре. 
+    Двери заперты. 
+    Только одна — приоткрыта. 
+    **Ванная.**
+  choices:
+    - text: "Зайти в ванную"
+      jump: "chapter1.bathroom_entry"
+    - text: "Пройти дальше"
+      jump: "chapter1.hallway_deeper"
+    - text: "Позвать: «Ая?»"
+      condition: { flag: aya_name_seen }
+      next: "call_aya"
+    - text: "Стучать в стены"
+      next: "knock_walls"
+
+call_aya:
+  text: |
+    > *"Ая? Ты здесь?"*
+
+    Тишина. 
+    Потом — шёпот из вентиляции:  
+    > *"Папа... ты забыл..."*
+  actions:
+    - add_coin: -15
+    - set_flag: aya_heard
+  choices:
+    - text: "Идти на голос"
+      jump: "chapter3.start"
+    - text: "Замолчать"
+      jump: "chapter1.start"
+
+knock_walls:
+  text: |
+    *Тук-тук.* 
+    Ответ: *тук-тук-тук.* 
+    **С другой стороны.** 
+    Детские пальцы.
+  actions:
+    - add_coin: -20
+  choices:
+    - text: "Продолжить"
+      jump: "end.wall_trap"
+    - text: "Уйти"
+      jump: "chapter1.start"

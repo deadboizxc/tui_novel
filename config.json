@@ -1,0 +1,6 @@
+{
+  "save_format": "json",
+  "config_format": "json",
+  "save_dir": "saves",
+  "type_delay": 0.05
+}

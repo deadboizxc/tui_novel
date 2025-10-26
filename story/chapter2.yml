@@ -1,0 +1,108 @@
+start:
+  bg: "city_fog"
+  text: |
+    Глава 2: Туман памяти
+    Ты — на улице. 
+    Город — **пуст**. 
+    Туман глотает звуки. 
+    Только эхо твоих шагов.
+  choices:
+    - text: "Метро"
+      next: "subway_entry"
+    - text: "Аптека"
+      next: "pharmacy"
+    - text: "Кричать в туман"
+      next: "scream_city"
+
+subway_entry:
+  bg: "subway_abandoned"
+  text: |
+    Эскалатор мёртв. 
+    Внизу — поезд. 
+    Двери открыты. 
+    Внутри — **ты**. Спит. 
+    На коленях — **плюшевая собака**.
+  choices:
+    - text: "Зайти"
+      next: "enter_train"
+    - text: "Уйти"
+      jump: "chapter3.start"
+
+enter_train:
+  animate:
+    type: "glitch_train"
+    duration: 3
+  text: |
+    Двери закрываются. 
+    Поезд трогается. 
+    Ты просыпаешься — **на сиденье напротив**. 
+    В руках — **нож**.
+  choices:
+    - text: "Разбудить себя"
+      jump: "end.train_stab"
+    - text: "Смотреть в окно"
+      next: "window_vision"
+
+window_vision:
+  text: |
+    В окне — **детская площадка**. 
+    Девочка качается. 
+    Машет. 
+    **Ты знаешь её.**
+  actions:
+    - set_flag: daughter_seen
+    - add_coin: -30
+  choices:
+    - text: "Выйти на следующей"
+      jump: "chapter3.start"
+
+pharmacy:
+  bg: "pharmacy_abandoned"
+  text: |
+    Рецепт на твоё имя:  
+    > *"Продолжать приём до полного стирания Я."*
+
+    На прилавке — **кассета** и **таблетки**.
+  choices:
+    - text: "Взломать кассу"
+      next: "break_register"
+    - text: "Уйти"
+      jump: "chapter2.start"
+
+break_register:
+  sfx: "metal_crunch"
+  text: |
+    Внутри:  
+    - Пачка таблеток  
+    - Кассета с надписью: *"Ая — папе"*
+  actions:
+    - add_item: cassette_tape
+  choices:
+    - text: "Забрать таблетки"
+      next: "take_pills_ch2"
+    - text: "Оставить"
+      jump: "chapter2.start"
+
+take_pills_ch2:
+  actions:
+    - increment: pills_taken
+    - add_coin: 30
+  text: |
+    Мир — чётче. 
+    Но голоса — **тише**. 
+    Ты забываешь её смех.
+  choices:
+    - text: "Уйти"
+      jump: "chapter3.start"
+
+scream_city:
+  text: |
+    Ты кричишь. 
+    Туман — **отвечает**:  
+    > *"Папа, я здесь..."*
+  actions:
+    - add_coin: -20
+    - set_flag: aya_whisper
+  choices:
+    - text: "Идти на голос"
+      jump: "chapter3.start"
