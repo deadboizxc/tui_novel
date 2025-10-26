@@ -1,0 +1,28 @@
+# story/intro.yaml
+start:
+  text: "Ты стоишь у окна. День начинается."
+  choices:
+    - text: "Посмотреть на улицу"
+      next: "street"
+    - text: "Вернуться спать"
+      next: "sleep"  # Добавляем переход на новую сцену
+    - text: "Выйти из дома"
+      actions:
+        - add_coin: 50
+        - jump: "end.final"
+street:
+  text: "На улице холодно, но спокойно."
+  choices:
+    - text: "Вернуться домой"
+      next: "start"
+    - text: "Пойти дальше"
+      actions:
+        - add_coin: 50
+        - jump: "chapter1.start"
+sleep:
+  text: "Ты вернулся в кровать и уснул. Через пару часов просыпаешься."
+  choices:
+    - text: "Встать и начать день"
+      next: "start"  # Возвращаемся к началу
+    - text: "Продолжить спать"
+      next: "sleep"  # Зацикливаемся на сне

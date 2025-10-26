@@ -1,0 +1,15 @@
+start:
+  text: "Ты вошёл в новый район города. Всё выглядит иначе."
+  actions:
+    - add_coin: 10
+  choices:
+    - text: "Осмотреться"
+      next: "street"
+    - text: "Идти к выходу"
+      jump: "end.final"
+
+street:
+  text: "На улице туман и редкие прохожие."
+  choices:
+    - text: "Назад"
+      jump: "intro.street"
