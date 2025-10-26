@@ -1,77 +1,71 @@
 import time
-from .animations import spinner_animation, dots_animation, progress_bar
-from .config import load_config, save_config
+from .animations import spinner_animation, dots_animation, pulse_text
 
 def perform_actions(gs, actions):
     for action in actions or []:
         perform_action(gs, action)
 
 def perform_action(gs, action):
-    if not isinstance(action, dict):
+    if isinstance(action, dict):
+        key, value = next(iter(action.items()))
+        match key:
+            case "set_flag": 
+                gs.flags[value] = True
+            case "unset_flag": 
+                gs.flags[value] = False
+            case "jump": 
+                gs.current = _normalize_target(gs, value)
+            case "add_coin": 
+                _update_stat(gs, "coins", int(value))
+            case "remove_coin": 
+                _update_stat(gs, "coins", -int(value))
+            case "animate": 
+                _handle_animation(value)
+            case _: 
+                print(f"[Неизвестное действие: {key}]")
         return
-    key, value = next(iter(action.items()))
 
-    match key:
-        case "set_flag":
-            gs.flags[value] = True
-        case "add_coin":
-            gs.stats["coins"] = gs.stats.get("coins", 0) + int(value)
-            print(f"[+{value} coins] → {gs.stats['coins']}")
-        case "animate":
-            handle_animation(value)
-        case "jump":
-            gs.current = _normalize_target(gs, value)
-        case "set_config_format":
-            config = load_config()
-            config["config_format"] = value
-            save_config(config)
-            print(f"[Формат конфига изменён на {value}]")
-            time.sleep(0.5)
-        case "set_save_format":
-            config = load_config()
-            config["save_format"] = value
-            save_config(config)
-            print(f"[Формат сохранения изменён на {value}]")
-            time.sleep(0.5)
-        case "set_save_dir":
-            config = load_config()
-            if value == "prompt":
-                new_dir = input("").strip()
-                if new_dir:
-                    config["save_dir"] = new_dir
-                    save_config(config)
-                    print(f"[Папка сохранений изменена на {new_dir}]")
-                else:
-                    print("[Папка не изменена]")
-            else:
-                config["save_dir"] = value
-                save_config(config)
-                print(f"[Папка сохранений изменена на {value}]")
-            time.sleep(0.5)
-
-def handle_animation(anim):
-    if isinstance(anim, str):
-        anim = {"type": anim, "text": "Анимация", "duration": 3}
-
-    anim_type = anim.get("type", "spinner")
-    text = anim.get("text", "...")
-    duration = anim.get("duration", 3)
-
-    if anim_type == "spinner":
-        spinner_animation(text, duration=duration)
-    elif anim_type == "dots":
-        dots_animation(text, duration=duration)
-    elif anim_type == "bar":
-        progress_bar(text, duration=duration)
-    else:
-        print(f"[Неизвестная анимация: {anim_type}]")
+    if isinstance(action, str):
+        parts = action.split()
+        if not parts: return
+        cmd = parts[0]
+        arg = parts[1] if len(parts) > 1 else None
+        if cmd == "jump" and arg: 
+            gs.current = _normalize_target(gs, arg)
+        elif cmd == "add_coin" and arg: 
+            _update_stat(gs, "coins", int(arg))
+        else: 
+            print(f"[Неизвестная строковая команда: {action}]")
 
 def _normalize_target(gs, target):
-    if target == "back":
-        return gs.history[-2] if len(gs.history) > 1 else gs.current
-    if "." in target:
-        return target
-    if "." in gs.current:
-        prefix = gs.current.split(".", 1)[0]
-        return f"{prefix}.{target}"
+    if "." not in target and "." in gs.current:
+        chapter = gs.current.split(".")[0]
+        return f"{chapter}.{target}"
     return target
+
+def _update_stat(gs, key, delta):
+    old = gs.stats.get(key, 0)
+    new = max(0, old + delta)
+    gs.stats[key] = new
+    print(f"[{'+' if delta >=0 else ''}{delta} {key}] → {new}")
+
+def _handle_animation(anim):
+    if isinstance(anim, str):
+        anim_type, text, duration = anim, "Анимация", 3
+    elif isinstance(anim, dict):
+        anim_type = anim.get("type", "spinner")
+        text = anim.get("text", "Анимация")
+        duration = anim.get("duration", 3)
+    else:
+        print(f"[Ошибка анимации: {anim}]")
+        return
+
+    # Запускаем анимацию
+    if anim_type == "spinner":
+        spinner_animation(text, duration)
+    elif anim_type == "dots":
+        dots_animation(text, duration)
+    elif anim_type == "pulse":
+        pulse_text(text, duration)
+    else:
+        print(f"[Неизвестная анимация: {anim_type}]")

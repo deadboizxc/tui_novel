@@ -1,15 +1,23 @@
-# story/intro.yaml
+innit:
+  actions:
+    - animate:
+        type: "spinner"
+        text: "Загрузка"
+        duration: 2
+    - jump: "start"
+
 start:
-  text: "Ты стоишь у окна. День начинается."
+  text: "Ты полностью проснулся и готов начать день."
   choices:
     - text: "Посмотреть на улицу"
       next: "street"
     - text: "Вернуться спать"
-      next: "sleep"  # Добавляем переход на новую сцену
+      next: "sleep"
     - text: "Выйти из дома"
       actions:
         - add_coin: 50
         - jump: "end.final"
+
 street:
   text: "На улице холодно, но спокойно."
   choices:
@@ -19,10 +27,11 @@ street:
       actions:
         - add_coin: 50
         - jump: "chapter1.start"
+
 sleep:
   text: "Ты вернулся в кровать и уснул. Через пару часов просыпаешься."
   choices:
     - text: "Встать и начать день"
-      next: "start"  # Возвращаемся к началу
+      next: "start"
     - text: "Продолжить спать"
-      next: "sleep"  # Зацикливаемся на сне
+      next: "sleep"

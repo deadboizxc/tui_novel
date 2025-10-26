@@ -1,15 +1,11 @@
 start:
-  text: "Ты вошёл в новый район города. Всё выглядит иначе."
-  actions:
-    - add_coin: 10
+  text: "Глава 1: Новые горизонты"
   choices:
-    - text: "Осмотреться"
-      next: "street"
-    - text: "Идти к выходу"
-      jump: "end.final"
+    - text: "Продолжить"
+      next: "explore"
 
-street:
-  text: "На улице туман и редкие прохожие."
+explore:
+  text: "Ты начинаешь исследовать новый район..."
   choices:
-    - text: "Назад"
+    - text: "Вернуться назад"
       jump: "intro.street"

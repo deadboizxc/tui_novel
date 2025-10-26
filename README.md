@@ -99,23 +99,23 @@ start:
   text: "Вы просыпаетесь в странном месте..."
   actions:
     - animate:
-        type: dots
+        type: "dots"
         text: "Загрузка мира"
         duration: 2
   choices:
     - text: "Оглядеться"
-      next: look
+      next: "look"
     - text: "Продолжить спать"
-      next: sleep
+      next: "sleep"
 look:
   text: "Вы видите старый дом вдали."
   choices:
     - text: "Идти к дому"
-      next: house
+      next: "house"
       conditions:
         - coins: 50
     - text: "Вернуться назад"
-      next: start
+      next: "start"
 ```
 
 ### Поля сцены
@@ -177,7 +177,7 @@ look:
   ```yaml
   actions:
     - animate:
-        type: bar
+        type: "bar"
         text: "Загрузка"
         duration: 4
   ```
@@ -215,7 +215,7 @@ look:
 ```yaml
 actions:
   - animate:
-      type: spinner
+      type: "spinner"
       text: "Подключение"
       duration: 2
 ```
@@ -248,24 +248,24 @@ start:
   text: "Вы стоите перед таинственным лесом."
   actions:
     - animate:
-        type: dots
+        type: "dots"
         text: "Осматриваюсь"
         duration: 2
     - add_coin: 10
   choices:
     - text: "Войти в лес"
-      next: forest
+      next: "forest"
     - text: "Обойти лес"
-      next: bypass
+      next: "bypass"
 forest:
   text: "Темнота леса поглощает вас..."
   choices:
     - text: "Идти дальше"
-      next: deeper
+      next: "deeper"
       conditions:
         - coins: 5
     - text: "Вернуться"
-      next: start
+      next: "start"
 ```
 
 Запустите игру:
@@ -309,7 +309,7 @@ TUI Novel Engine создан для:
 
 ## Лицензия
 
-MIT License (или укажите вашу лицензию).
+[MIT License](LICENSE).
 
 ---
 
